@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>孙家琪 - 影视美术设计</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0f0f0f;
+            --secondary-color: #1a1a1a;
+            --accent-color: #4ade80;
+            --accent-dark: #22c55e;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --hover-glow: rgba(74, 222, 128, 0.3);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--primary-color);
+            color: var(--text-primary);
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(15, 15, 15, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            letter-spacing: 2px;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            padding: 0.5rem 0;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-color);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .section {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            padding: 6rem 2rem 2rem;
+            overflow-y: auto;
+        }
+
+        #home {
+            height: auto;
+            min-height: 100%;
+        }
+
+        .section.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 10;
+        }
+
+        .content-wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(ellipse at 20% 30%, rgba(74, 222, 128, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(74, 222, 128, 0.05) 0%, transparent 50%),
+                linear-gradient(180deg, #0a0a0a 0%, #1a1a1a 100%);
+            z-index: -2;
+        }
+
+        .hero-geometric {
+            position: absolute;
+            z-index: -1;
+        }
+
+        .hero-geometric.circle1 {
+            top: 10%;
+            left: 10%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 1px solid rgba(74, 222, 128, 0.1);
+            animation: float1 8s ease-in-out infinite;
+        }
+
+        .hero-geometric.circle2 {
+            bottom: 10%;
+            right: 10%;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            border: 1px solid rgba(74, 222, 128, 0.08);
+            animation: float2 10s ease-in-out infinite;
+        }
+
+        .hero-geometric.line1 {
+            top: 20%;
+            right: 20%;
+            width: 200px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.3), transparent);
+            transform: rotate(45deg);
+            animation: pulseLine 4s ease-in-out infinite;
+        }
+
+        .hero-geometric.line2 {
+            bottom: 30%;
+            left: 15%;
+            width: 150px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(74, 222, 128, 0.2), transparent);
+            transform: rotate(-30deg);
+            animation: pulseLine 5s ease-in-out infinite;
+        }
+
+        .hero-geometric.square1 {
+            top: 60%;
+            right: 5%;
+            width: 80px;
+            height: 80px;
+            border: 1px solid rgba(74, 222, 128, 0.15);
+            transform: rotate(15deg);
+            animation: rotateSquare 15s linear infinite;
+        }
+
+        .hero-geometric.square2 {
+            top: 15%;
+            left: 70%;
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(74, 222, 128, 0.1);
+            transform: rotate(-20deg);
+            animation: rotateSquare 20s linear infinite reverse;
+        }
+
+        @keyframes float1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 30px) scale(0.95); }
+        }
+
+        @keyframes float2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-40px, 20px) scale(0.95); }
+            66% { transform: translate(20px, -30px) scale(1.05); }
+        }
+
+        @keyframes pulseLine {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.8; }
+        }
+
+        @keyframes rotateSquare {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .hero-main {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-main h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-color) 50%, var(--text-primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            background-size: 200% auto;
+            animation: gradientText 3s ease infinite;
+            letter-spacing: 8px;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% center; }
+            50% { background-position: 100% center; }
+            100% { background-position: 0% center; }
+        }
+
+        .hero-main .title {
+            font-size: 1.4rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            letter-spacing: 4px;
+            font-weight: 300;
+        }
+
+        .hero-main .description {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            line-height: 2;
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .contact-info {
+            display: flex;
+            gap: 2.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .contact-item:hover {
+            color: var(--accent-color);
+            transform: translateY(-3px);
+            background: rgba(74, 222, 128, 0.05);
+        }
+
+        .contact-item i {
+            font-size: 1.3rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.4s ease;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 20px rgba(74, 222, 128, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(74, 222, 128, 0.5);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 4rem;
+            background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 4px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
+        }
+
+        .project-card {
+            background: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-8px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+        }
+
+        .project-card .project-image {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .project-card .project-image .image-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            color: var(--accent-color);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover .project-image .image-placeholder {
+            transform: scale(1.1);
+        }
+
+        .project-card .project-image .video-badge {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.4rem 1rem;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+        }
+
+        .project-card .project-info {
+            padding: 1.5rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+        }
+
+        .project-card .role {
+            color: var(--accent-color);
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .project-card .type {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .project-card .description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-card {
+            background: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
+            background: rgba(74, 222, 128, 0.03);
+            box-shadow: 0 10px 30px rgba(74, 222, 128, 0.1);
+        }
+
+        .skill-card i {
+            font-size: 3rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .skill-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+        }
+
+        .skill-card .level {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .skill-card .level-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-color), var(--accent-dark));
+            border-radius: 4px;
+            transition: width 0.8s ease;
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.05);
+            border-color: var(--accent-color);
+        }
+
+        .portfolio-item .portfolio-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            background: var(--secondary-color);
+            transition: all 0.3s ease;
+        }
+
+        .portfolio-item:hover .portfolio-placeholder {
+            background: rgba(74, 222, 128, 0.05);
+        }
+
+        .portfolio-item .overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .portfolio-item:hover .overlay {
+            opacity: 1;
+        }
+
+        .portfolio-item .overlay h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            letter-spacing: 1px;
+        }
+
+        .portfolio-item .overlay p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .contact-info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-info-section h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.2rem;
+            background: var(--secondary-color);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .contact-detail:hover {
+            border-color: var(--accent-color);
+            transform: translateX(8px);
+            box-shadow: 0 5px 20px rgba(74, 222, 128, 0.1);
+        }
+
+        .contact-detail i {
+            font-size: 1.6rem;
+            color: var(--accent-color);
+        }
+
+        .contact-detail .info-text h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .contact-detail .info-text p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-form {
+            background: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2.5rem;
+        }
+
+        .contact-form h3 {
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            background: rgba(74, 222, 128, 0.03);
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+            color: var(--primary-color);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+
+        .form-group button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 40px rgba(74, 222, 128, 0.4);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            max-width: 1000px;
+            width: 100%;
+            max-height: 90vh;
+            background: var(--secondary-color);
+            border-radius: 20px;
+            overflow: hidden;
+            animation: modalIn 0.4s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.8) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--primary-color);
+        }
+
+        .modal-header h3 {
+            font-size: 1.6rem;
+            letter-spacing: 2px;
+        }
+
+        .modal-close {
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+            padding: 0.5rem;
+            border-radius: 50%;
+        }
+
+        .modal-close:hover {
+            color: var(--accent-color);
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .modal-body {
+            padding: 2rem;
+            overflow-y: auto;
+            max-height: calc(90vh - 100px);
+        }
+
+        .modal-video {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            background: #000;
+            border: none;
+        }
+
+        .modal-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+
+        .modal-image-item {
+            aspect-ratio: 4/3;
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--primary-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: var(--accent-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-image-item:hover {
+            transform: scale(1.03);
+            border-color: var(--accent-color);
+        }
+
+        .modal-body p {
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .modal-body strong {
+            color: var(--accent-color);
+        }
+
+        .image-replace-hint {
+            font-size: 0.75rem;
+            color: rgba(74, 222, 128, 0.5);
+            text-align: center;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1.2rem;
+            }
+
+            .nav-content {
+                padding: 1rem;
+            }
+
+            .hero-main h1 {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+
+            .hero-main .title {
+                font-size: 1.1rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .contact-content {
+                grid-template-columns: 1fr;
+            }
+
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .hero-geometric {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-main h1 {
+                font-size: 1.8rem;
+                letter-spacing: 2px;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="logo" onclick="showSection('home')">SQ</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showSection('home')">首页</a></li>
+                <li><a href="#" onclick="showSection('projects')">项目经历</a></li>
+                <li><a href="#" onclick="showSection('skills')">专业技能</a></li>
+                <li><a href="#" onclick="showSection('contact')">联系我</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-bg"></div>
+                <div class="hero-geometric circle1"></div>
+                <div class="hero-geometric circle2"></div>
+                <div class="hero-geometric line1"></div>
+                <div class="hero-geometric line2"></div>
+                <div class="hero-geometric square1"></div>
+                <div class="hero-geometric square2"></div>
+                
+                <div class="hero-main">
+                    <h1>孙家琪</h1>
+                    <p class="title">影视美术设计师 | 场景设计师</p>
+                    <p class="description">
+                        山西传媒学院2023届影视美术设计专业本科<br>
+                        在校期间系统学习影视美术创作、剧本创作、镜头分析与空间架构<br>
+                        持续参与校内外影视项目的美术与道具制作工作
+                    </p>
+                    <div class="contact-info">
+                        <div class="contact-item">
+                            <i>📍</i>
+                            <span>山西 · 运城</span>
+                        </div>
+                        <div class="contact-item">
+                            <i>📞</i>
+                            <span>18295713848</span>
+                        </div>
+                        <div class="contact-item">
+                            <i>✉️</i>
+                            <span>645856575@qq.com</span>
+                        </div>
+                    </div>
+                    <a href="#" class="btn" onclick="showSection('projects')">查看项目经历</a>
+                </div>
+            </div>
+            <div class="footer">
+                © 2026 孙家琪 | 影视美术设计
+            </div>
+        </section>
+
+        <section id="projects" class="section">
+            <div class="content-wrapper">
+                <h2 class="section-title">项目经历</h2>
+                <div class="projects-grid">
+                    <div class="project-card" onclick="openProjectModal('yellow-tent')">
+                        <div class="project-image" style="background: var(--secondary-color);">
+                            <img src="./images/yellow-tent-1.png" alt="黄色帐篷" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="project-info">
+                            <h3>《黄色帐篷》</h3>
+                            <p class="role">现场美术</p>
+                            <p class="type">86356短片周参展作品</p>
+                            <p class="description">负责乡村庭院、小卖部、田野草垛等场景的美术设计与道具布置，营造浓郁的生活气息和年代感。</p>
+                        </div>
+                    </div>
+
+                    <div class="project-card" onclick="openProjectModal('yinghao')">
+                        <div class="project-image" style="background: var(--secondary-color);">
+                            <img src="./images/yinghao-1.png" alt="英豪" style="width: 100%; height: 100%; object-fit: cover;">
+                            <div class="video-badge">📹 视频</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>《英豪》</h3>
+                            <p class="role">美术负责人</p>
+                            <p class="type">成龙电影节创投项目</p>
+                            <p class="description">担任美术负责人，负责体育器材室、更衣室等场景的整体美术设计与置景协调。</p>
+                        </div>
+                    </div>
+
+                    <div class="project-card" onclick="openProjectModal('xiaolu')">
+                        <div class="project-image" style="background: linear-gradient(135deg, #374151 0%, #1f2937 100%); display: flex; align-items: center; justify-content: center;">
+                            <div style="color: var(--accent-color); font-size: 3rem;">🎬</div>
+                        </div>
+                        <div class="project-info">
+                            <h3>《小路》</h3>
+                            <p class="role">道具师</p>
+                            <p class="type">北京电影学院研究生毕业作品</p>
+                            <p class="description">担任道具师，负责影片中所有道具的设计、制作与现场布置工作。</p>
+                        </div>
+                    </div>
+
+                    <div class="project-card" onclick="openProjectModal('jinbi')">
+                        <div class="project-image" style="background: var(--secondary-color);">
+                            <img src="./images/jinbi-1.jpg.jpg" alt="禁闭" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="project-info">
+                            <h3>《禁闭》</h3>
+                            <p class="role">舞台设计</p>
+                            <p class="type">舞台剧</p>
+                            <p class="description">负责舞台模型设计与制作，包括平面图绘制、立体模型搭建和手绘效果图创作。</p>
+                        </div>
+                    </div>
+
+                    <div class="project-card" onclick="openProjectModal('dormitory')">
+                        <div class="project-image" style="background: var(--secondary-color);">
+                            <img src="./images/dormitory-1.png" alt="宿舍观察" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="project-info">
+                            <h3>《宿舍观察》</h3>
+                            <p class="role">场景设计</p>
+                            <p class="type">微缩模型创作</p>
+                            <p class="description">微缩场景设计作品，利用雨伞等道具营造独特的视觉效果和空间氛围。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="section">
+            <div class="content-wrapper">
+                <h2 class="section-title">专业技能</h2>
+                <div class="skills-grid">
+                    <div class="skill-card">
+                        <i>🎨</i>
+                        <h4>道具制作</h4>
+                        <div class="level"><div class="level-fill" style="width: 95%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>🏗️</i>
+                        <h4>场景搭建</h4>
+                        <div class="level"><div class="level-fill" style="width: 90%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>🎭</i>
+                        <h4>舞台设计</h4>
+                        <div class="level"><div class="level-fill" style="width: 88%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>🔬</i>
+                        <h4>微缩模型</h4>
+                        <div class="level"><div class="level-fill" style="width: 85%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>✏️</i>
+                        <h4>手绘效果图</h4>
+                        <div class="level"><div class="level-fill" style="width: 92%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>📐</i>
+                        <h4>AutoCAD</h4>
+                        <div class="level"><div class="level-fill" style="width: 85%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>🖥️</i>
+                        <h4>Photoshop</h4>
+                        <div class="level"><div class="level-fill" style="width: 88%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>🎬</i>
+                        <h4>置景协调</h4>
+                        <div class="level"><div class="level-fill" style="width: 90%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>🌈</i>
+                        <h4>色彩搭配</h4>
+                        <div class="level"><div class="level-fill" style="width: 95%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>📖</i>
+                        <h4>剧本分析</h4>
+                        <div class="level"><div class="level-fill" style="width: 82%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>🎥</i>
+                        <h4>镜头分析</h4>
+                        <div class="level"><div class="level-fill" style="width: 86%"></div></div>
+                    </div>
+                    <div class="skill-card">
+                        <i>🏠</i>
+                        <h4>空间架构</h4>
+                        <div class="level"><div class="level-fill" style="width: 88%"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="section">
+            <div class="content-wrapper">
+                <h2 class="section-title">联系我</h2>
+                <div class="contact-content">
+                    <div class="contact-info-section">
+                        <h3>联系方式</h3>
+                        <div class="contact-detail">
+                            <i>📍</i>
+                            <div class="info-text">
+                                <h4>地址</h4>
+                                <p>山西 · 晋中</p>
+                            </div>
+                        </div>
+                        <div class="contact-detail">
+                            <i>📞</i>
+                            <div class="info-text">
+                                <h4>电话</h4>
+                                <p>18295713848</p>
+                            </div>
+                        </div>
+                        <div class="contact-detail">
+                            <i>✉️</i>
+                            <div class="info-text">
+                                <h4>邮箱</h4>
+                                <p>645856575@qq.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-form">
+                        <h3>发送消息</h3>
+                        <form id="contactForm">
+                            <div class="form-group">
+                                <label for="name">姓名</label>
+                                <input type="text" id="name" required placeholder="请输入您的姓名">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">邮箱</label>
+                                <input type="email" id="email" required placeholder="请输入您的邮箱">
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">主题</label>
+                                <input type="text" id="subject" required placeholder="请输入消息主题">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">消息内容</label>
+                                <textarea id="message" required placeholder="请输入您的消息"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit">发送消息</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="projectModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">项目详情</h3>
+                <div class="modal-close" onclick="closeModal()">×</div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        function openProjectModal(projectId) {
+            const modal = document.getElementById('projectModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalBody = document.getElementById('modalBody');
+            
+            const projects = {
+                'yellow-tent': {
+                    title: '《黄色帐篷》',
+                    content: `
+                        <p><strong>角色：</strong>现场美术</p>
+                        <p><strong>类型：</strong>86356短片周参展作品</p>
+                        <p><strong>简介：</strong>负责乡村庭院、小卖部、田野草垛、帐篷内景、夜晚庭院、篝火等场景的美术设计与道具布置，营造浓郁的生活气息和年代感。</p>
+                        <h4 style="margin-top: 1.5rem; color: var(--accent-color);">场景展示：</h4>
+                        <div class="modal-images">
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/yellow-tent-1.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/yellow-tent-2.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/yellow-tent-3.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/yellow-tent-4.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/yellow-tent-5.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/yellow-tent-6.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                        </div>
+                    `
+                },
+                'yinghao': {
+                    title: '《英豪》',
+                    content: `
+                        <p><strong>角色：</strong>美术负责人</p>
+                        <p><strong>类型：</strong>成龙电影节创投项目</p>
+                        <p><strong>简介：</strong>担任美术负责人，负责体育器材室、更衣室等场景的整体美术设计与置景协调。</p>
+                        <h4 style="margin-top: 1.5rem; color: var(--accent-color);">影片链接：</h4>
+                        <iframe class="modal-video" src="https://v.qq.com/iframe/player.html?vid=a33358b5cdu&tiny=0&auto=0" frameborder="0" allowfullscreen></iframe>
+                        <h4 style="margin-top: 1.5rem; color: var(--accent-color);">场景截图：</h4>
+                        <div class="modal-images">
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/yinghao-1.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/yinghao-2.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                        </div>
+                    `
+                },
+                'xiaolu': {
+                    title: '《小路》',
+                    content: `
+                        <p><strong>角色：</strong>道具师</p>
+                        <p><strong>类型：</strong>北京电影学院研究生毕业作品</p>
+                        <p><strong>简介：</strong>担任道具师，负责影片中所有道具的设计、制作与现场布置工作。</p>
+                    `
+                },
+                'jinbi': {
+                    title: '《禁闭》',
+                    content: `
+                        <p><strong>角色：</strong>舞台设计</p>
+                        <p><strong>类型：</strong>舞台剧</p>
+                        <p><strong>简介：</strong>负责舞台模型设计与制作，包括平面图绘制、立体模型搭建和手绘效果图创作。</p>
+                        <h4 style="margin-top: 1.5rem; color: var(--accent-color);">设计展示：</h4>
+                        <div class="modal-images">
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/jinbi-1.jpg.jpg" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/jinbi-2.jpg.jpg" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/jinbi-3.jpg.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/jinbi-4.jpg.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/jinbi-5.jpg.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                        </div>
+                    `
+                },
+                'dormitory': {
+                    title: '《宿舍观察》',
+                    content: `
+                        <p><strong>角色：</strong>场景设计</p>
+                        <p><strong>类型：</strong>微缩模型创作 / 生活观察微观模型</p>
+                        <p><strong>简介：</strong>微缩场景设计作品，利用雨伞等道具营造独特的视觉效果和空间氛围。通过微观视角观察生活，展现细腻的空间美学。</p>
+                        <h4 style="margin-top: 1.5rem; color: var(--accent-color);">作品展示：</h4>
+                        <div class="modal-images">
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/dormitory-1.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/dormitory-2.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/dormitory-3.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                            <div class="modal-image-item" style="padding: 0;"><img src="./images/dormitory-4.png" style="width: 100%; height: 100%; object-fit: cover;"></div>
+                        </div>
+                    `
+                }
+            };
+
+            modalTitle.textContent = projects[projectId].title;
+            modalBody.innerHTML = projects[projectId].content;
+            modal.classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('projectModal').classList.remove('active');
+        }
+
+        document.getElementById('projectModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('消息发送成功！我会尽快回复您。');
+            this.reset();
+        });
+    </script>
+</body>
+</html>
